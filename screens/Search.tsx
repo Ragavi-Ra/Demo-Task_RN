@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { View, TextInput, FlatList, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import config from '../config';
 import axios from 'axios';
+import { useFocusEffect } from '@react-navigation/native';
 
 const Search = () => {
   const [allCompanies, setAllCompanies] = useState([]);
@@ -9,7 +10,8 @@ const Search = () => {
   const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [showDropdown, setShowDropdown] = useState(false);
 
-  useEffect(() => {
+useFocusEffect(
+  useCallback(() => {
     const fetchCompanies = async () => {
       try {
         const response = await axios.get(`${config.API_URL}/companydropdown`);
@@ -18,8 +20,10 @@ const Search = () => {
         console.error('Error fetching companies:', error);
       }
     };
+    
     fetchCompanies();
-  }, []);
+  }, [])
+);
 
   const handleSearch = (text: string) => {
     setSearchQuery(text);
